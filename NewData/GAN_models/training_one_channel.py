@@ -37,7 +37,7 @@ batch_size = 64
 training_ratio = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GP_Weight = 10  # As per the paper
 sample_freq = 1 # frequency at which you want to generate image or save generator models
-Number_epochs = 100
+Number_epochs = 1000
 
 
 # # uploading target data for the given subject
