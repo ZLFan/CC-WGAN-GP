@@ -31,10 +31,17 @@ def generate_eeg(generator_model, dir, epoch, freq):
     if epoch%freq==0:
         dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
         # eeg_gen = generator_model.predict(np.random.normal(0, 1, (100, 120)))
-        # 脑电噪声
-        idx = np.random.randint(0, 1252, 120)
-        noise = X_noise[idx]
-        noise = np.squeeze(noise, axis=2)
+        #脑电噪声
+        idx = np.random.randint(0, 121056, 1252)
+        X_noise = get_noise()
+        noise = X_noise[idx,0:120,:]
+        # print("noise:",noise.shape) 
+        noise = np.squeeze(noise, axis=2).astype(np.float32)
+        # # 脑电噪声
+        # X_noise = get_noise()
+        # idx = np.random.randint(0, 1252, 120)
+        # noise = X_noise[idx]
+        # noise = np.squeeze(noise, axis=2)
         #eeg_gen = generator_model.predict(np.random.normal(0, 1, (1252, 120)))
         eeg_gen = generator_model.predict(noise)
         np.save(str(dir) + '/eeg_generated/' + str(epoch) + '.npy', eeg_gen) #comment this, if you don't want to save samples

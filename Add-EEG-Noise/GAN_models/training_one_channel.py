@@ -185,13 +185,14 @@ for epoch in range(Number_epochs):
             image_batch = discriminator_minibatches[j * batch_size:(j + 1) * batch_size]
             y_value = y_value_minibatches[j * batch_size:(j + 1) * batch_size]
             #脑电噪声
-            idx = np.random.randint(0, batch_size, 120)
+            idx = np.random.randint(0, 121056, batch_size)
             X_noise = get_noise()
-            noise = X_noise[idx]
+            noise = X_noise[idx,0:120,:]
+            # print("noise:",noise.shape) 
             noise = np.squeeze(noise, axis=2).astype(np.float32)
-            eegnoise=noise[1:120]
+            # print("noise:",noise.shape)
             #noise = np.random.normal(0, 1, (batch_size, 120)).astype(np.float32)
-            discriminator_loss.append(discriminator_model.train_on_batch([image_batch,eegnoise, y_value],
+            discriminator_loss.append(discriminator_model.train_on_batch([image_batch,noise, y_value],
                                                                          [positive_y, negative_y, dummy_y]))
 
         sampled_labels = np.random.randint(0, 2, batch_size).reshape(-1, 1)
