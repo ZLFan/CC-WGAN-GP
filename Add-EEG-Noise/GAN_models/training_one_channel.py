@@ -189,9 +189,9 @@ for epoch in range(Number_epochs):
             X_noise = get_noise()
             noise = X_noise[idx]
             noise = np.squeeze(noise, axis=2).astype(np.float32)
-
+            eegnoise=noise[1:120]
             #noise = np.random.normal(0, 1, (batch_size, 120)).astype(np.float32)
-            discriminator_loss.append(discriminator_model.train_on_batch([image_batch,noise, y_value],
+            discriminator_loss.append(discriminator_model.train_on_batch([image_batch,eegnoise, y_value],
                                                                          [positive_y, negative_y, dummy_y]))
 
         sampled_labels = np.random.randint(0, 2, batch_size).reshape(-1, 1)
