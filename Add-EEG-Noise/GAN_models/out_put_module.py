@@ -32,7 +32,8 @@ def generate_eeg(generator_model, dir, epoch, freq):
         dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
         # eeg_gen = generator_model.predict(np.random.normal(0, 1, (100, 120)))
         #脑电噪声
-        idx = np.random.randint(0, 121056, 1252)
+        # idx = np.random.randint(0, 121056, 1252)
+        idx = np.random.randint(0, 121056, 100)
         X_noise = get_noise()
         noise = X_noise[idx,0:120,:]
         # print("noise:",noise.shape) 
@@ -52,10 +53,10 @@ def generate_eeg(generator_model, dir, epoch, freq):
 def generate_condi_eeg(generator_model, dir, epoch, freq):
     dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
     if epoch%freq==0:
-        if not os.path.exists('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/target_/'):
-            os.makedirs('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/target_/')
-        if not os.path.exists('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/nontarget_/'):
-            os.makedirs('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/nontarget_/')
+        if not os.path.exists('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/target_/'):
+            os.makedirs('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/target_/')
+        if not os.path.exists('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/nontarget_/'):
+            os.makedirs('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/nontarget_/')
         # randomly input to the generator
         # noise = np.random.normal(0, 1, (100, 120)).astype(np.float32)
         # nontarget_labels = np.random.randint(0, 1, 100).reshape(-1, 1)
@@ -63,17 +64,14 @@ def generate_condi_eeg(generator_model, dir, epoch, freq):
         #noise = np.random.normal(0, 1, (1252, 120)).astype(np.float32)
 
         #脑电噪声
-        # idx = np.random.randint(0, 1252, 120)
-        # noise = X_noise[idx]
-        # noise = np.squeeze(noise, axis=2).astype(np.float32)
-        idx = np.random.randint(0, 121056, 1252)
+        idx = np.random.randint(0, 121056, 100)
         X_noise = get_noise()
         noise = X_noise[idx,0:120,:]
         # print("noise:",noise.shape) 
         noise = np.squeeze(noise, axis=2).astype(np.float32)
 
-        nontarget_labels = np.random.randint(0, 1, 1252).reshape(-1, 1)
-        target_labels = np.random.randint(1, 2, 1252).reshape(-1, 1)
+        nontarget_labels = np.random.randint(0, 1, 100).reshape(-1, 1)
+        target_labels = np.random.randint(1, 2, 100).reshape(-1, 1)
         # generate target & non-target samples
         generated_target = generator_model.predict([noise, target_labels.astype('float32')])
         generated_nontarget = generator_model.predict([noise, nontarget_labels.astype('float32')])
@@ -81,9 +79,9 @@ def generate_condi_eeg(generator_model, dir, epoch, freq):
         # np.save(str(dir) + '/eeg_generated/target_' + str(epoch) + '.npy', generated_target)
         print("generated_target.shape: ",generated_target.shape)
         print("generated_nontarget.shape: ",generated_nontarget.shape)
-        sio.savemat('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/target_/%d.mat' % (epoch), {'eeg': generated_target})
+        sio.savemat('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/target_/%d.mat' % (epoch), {'eeg': generated_target})
         # np.save(str(dir) + '/eeg_generated/nontarget_' + str(epoch) + '.npy', generated_nontarget)
-        sio.savemat('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/nontarget_/%d.mat' % (epoch), {'eeg': generated_nontarget})
+        sio.savemat('/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/eeg_generated/nontarget_/%d.mat' % (epoch), {'eeg': generated_nontarget})
         # comment below, if you don't want to save model
         # generator_model.save(str(dir) + '/saved_model/' + 'generator_' + str(epoch) + '.h5')
 

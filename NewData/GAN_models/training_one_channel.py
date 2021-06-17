@@ -37,7 +37,7 @@ batch_size = 64
 training_ratio = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GP_Weight = 10  # As per the paper
 sample_freq = 1 # frequency at which you want to generate image or save generator models
-Number_epochs = 1000
+Number_epochs = 100
 
 
 # # uploading target data for the given subject
@@ -216,13 +216,13 @@ for epoch in range(Number_epochs):
             # noise = X_noise[idx]
             # noise = np.squeeze(noise, axis=2).astype(np.float32)
 
-            noise = np.random.normal(0, 1, (batch_size, 120)).astype(np.float32)
+            noise = np.random.normal(-1, 1, (batch_size, 120)).astype(np.float32)
             discriminator_loss.append(discriminator_model.train_on_batch([image_batch,noise, y_value],
                                                                          [positive_y, negative_y, dummy_y]))
 
         sampled_labels = np.random.randint(0, 2, batch_size).reshape(-1, 1)
 
-        generator_loss.append(generator_model.train_on_batch([np.random.normal(0, 1, (batch_size, 120)), sampled_labels], positive_y))
+        generator_loss.append(generator_model.train_on_batch([np.random.normal(-1, 1, (batch_size, 120)), sampled_labels], positive_y))
 
     epochs.append(epoch)
     wgan_d_itr.append(np.array(discriminator_loss)[:, 0])
