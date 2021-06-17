@@ -178,23 +178,23 @@ epochs = [];
 wgan_d_itr =[];wgan_g_itr=[]; #discriminator and generator losses for each iteration in training ratio
 wgan_d_ep=[];wgan_g_ep=[]; #discriminator and generator losses for each epoch averaging over training ratio
 
-def get_noise(self):
-    PATH = 'datanoise.mat'
-    data = sio.loadmat(PATH)
-    train_noise = data['eeg_noise']
-    train_noise = np.array(train_noise)
-    # print(train_noise.shape)
-    all_noise = np.zeros((train_noise.shape[0] * 32, 231))
-    for i in range(0, train_noise.shape[0]):
-        for j in range(0, 32):
-            all_noise[i * j, :] = train_noise[i, j, :]
-    all_noise = all_noise[:, 0:231]
-    # all_noise = np.squeeze(all_noise, axis=2)
-    all_noise = preprocessing.MaxAbsScaler().fit_transform(all_noise)
-    all_noise = np.expand_dims(all_noise, axis=2)
-    print(all_noise.shape)
+# def get_noise(self):
+#     PATH = 'datanoise.mat'
+#     data = sio.loadmat(PATH)
+#     train_noise = data['eeg_noise']
+#     train_noise = np.array(train_noise)
+#     # print(train_noise.shape)
+#     all_noise = np.zeros((train_noise.shape[0] * 32, 231))
+#     for i in range(0, train_noise.shape[0]):
+#         for j in range(0, 32):
+#             all_noise[i * j, :] = train_noise[i, j, :]
+#     all_noise = all_noise[:, 0:231]
+#     # all_noise = np.squeeze(all_noise, axis=2)
+#     all_noise = preprocessing.MaxAbsScaler().fit_transform(all_noise)
+#     all_noise = np.expand_dims(all_noise, axis=2)
+#     print(all_noise.shape)
 
-    return all_noise
+#     return all_noise
 
 for epoch in range(Number_epochs):
     np.random.shuffle(X_train)
