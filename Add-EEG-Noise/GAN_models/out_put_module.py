@@ -9,7 +9,7 @@ mm = MinMaxScaler()
 os.environ["CUDA_VISIBLE_DEVICES"]= '0'
 
 # generate vanilla eeg during training
-def get_noise(self):
+def get_noise():
     PATH = '/workspace/CC-WGAN-GP/DATA/datanoise.mat'
     data = sio.loadmat(PATH)
     train_noise = data['eeg_noise']
@@ -63,8 +63,13 @@ def generate_condi_eeg(generator_model, dir, epoch, freq):
         #noise = np.random.normal(0, 1, (1252, 120)).astype(np.float32)
 
         #脑电噪声
-        idx = np.random.randint(0, 1252, 120)
-        noise = X_noise[idx]
+        # idx = np.random.randint(0, 1252, 120)
+        # noise = X_noise[idx]
+        # noise = np.squeeze(noise, axis=2).astype(np.float32)
+        idx = np.random.randint(0, 121056, 1252)
+        X_noise = get_noise()
+        noise = X_noise[idx,0:120,:]
+        # print("noise:",noise.shape) 
         noise = np.squeeze(noise, axis=2).astype(np.float32)
 
         nontarget_labels = np.random.randint(0, 1, 1252).reshape(-1, 1)
