@@ -25,7 +25,8 @@ def generate_eeg(generator_model, dir, epoch, freq):
 
     if epoch%freq==0:
         dir='/workspace/CC-WGAN-GP/RESULT/newdata/'
-        eeg_gen = generator_model.predict(np.random.normal(-1, 1, (100, 120)))
+        # eeg_gen = generator_model.predict(np.random.normal(-1, 1, (100, 120)))
+        eeg_gen = generator_model.predict(np.random.normal(-1, 1, (1252, 120)))
         #np.save(str(dir) + '/eeg_generated/' + str(epoch) + '.npy', eeg_gen) #comment this, if you don't want to save samples
         sio.savemat(str(dir)+'/eeg_generated/eeg_gen%d.mat' % (epoch), {'eeg_gen': eeg_gen})
         # generator_model.save(str(dir) + '/saved_model/' + 'generator_' + str(epoch) + '.h5')
@@ -41,9 +42,12 @@ def generate_condi_eeg(generator_model, dir, epoch, freq):
             os.makedirs(str(dir)+'eeg_generated/nontarget_/')
         
        # randomly input to the generator
-        noise = np.random.normal(-1, 1, (100, 120)).astype(np.float32)
-        nontarget_labels = np.random.randint(0, 1, 100).reshape(-1, 1)
-        target_labels = np.random.randint(1, 2, 100).reshape(-1, 1)
+        # noise = np.random.normal(-1, 1, (100, 120)).astype(np.float32)
+        # nontarget_labels = np.random.randint(0, 1, 100).reshape(-1, 1)
+        # target_labels = np.random.randint(1, 2, 100).reshape(-1, 1)
+        noise = np.random.normal(-1, 1, (1252, 120)).astype(np.float32)
+        nontarget_labels = np.random.randint(0, 1, 1252).reshape(-1, 1)
+        target_labels = np.random.randint(1, 2, 1252).reshape(-1, 1)
         # generate target & non-target samples
         generated_target = generator_model.predict([noise, target_labels.astype('float32')])
         generated_nontarget = generator_model.predict([noise, nontarget_labels.astype('float32')])

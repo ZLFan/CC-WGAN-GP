@@ -34,7 +34,7 @@ batch_size = 64
 training_ratio = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GP_Weight = 10  # As per the paper
 sample_freq = 10 # frequency at which you want to generate image or save generator models
-Number_epochs = 1000
+Number_epochs = 100
 
 # PATH = 'session1_epoch/'
 # data = sio.loadmat(PATH+ 'subject_'+'1.mat')
