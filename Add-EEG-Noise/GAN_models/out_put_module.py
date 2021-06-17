@@ -6,7 +6,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]= '0'
 
 # generate vanilla eeg during training
 def get_noise(self):
-    PATH = 'datanoise.mat'
+    PATH = '/workspace/CC-WGAN-GP/DATA/datanoise.mat'
     data = sio.loadmat(PATH)
     train_noise = data['eeg_noise']
     train_noise = np.array(train_noise)
@@ -25,6 +25,7 @@ def get_noise(self):
 def generate_eeg(generator_model, dir, epoch, freq):
 
     if epoch%freq==0:
+        dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
         # eeg_gen = generator_model.predict(np.random.normal(0, 1, (100, 120)))
         # 脑电噪声
         idx = np.random.randint(0, 1252, 120)
@@ -38,7 +39,7 @@ def generate_eeg(generator_model, dir, epoch, freq):
 
 # generate conditional eeg during training (used in one channel GAN)
 def generate_condi_eeg(generator_model, dir, epoch, freq):
-    
+    dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
     if epoch%freq==0:
         if not os.path.exists('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/target_/'):
             os.makedirs('F:/AI/CODE/CC-WGAN-GP-master/outputs/eeg_generated/target_/')
@@ -73,6 +74,7 @@ def generate_condi_eeg(generator_model, dir, epoch, freq):
 # save trained CC-GAN models, generated target & nontarget for best classifier AUC
 def save_CC_GAN(generator_model, discriminator_model, dir):
         # randomly input to the generator
+        dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
         noise = np.random.normal(0, 1, (784, 120)).astype(np.float32)
         nontarget_labels = np.random.randint(0, 1, 784).reshape(-1, 1)
         target_labels = np.random.randint(1, 2, 784).reshape(-1, 1)
@@ -88,6 +90,7 @@ def save_CC_GAN(generator_model, discriminator_model, dir):
 
 # classifier test AUC during training
 def plot_AUC(AUC, dir):
+    dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
     plt.plot(AUC, label="Classifier_AUC")
     plt.title('Classifier Performace')
     plt.savefig(str(dir) + '/evaluation/' + 'Classifier_AUC.png')
@@ -96,6 +99,7 @@ def plot_AUC(AUC, dir):
 
 # if you want to save weights and model architecture separate
 def save(model, dir, model_name):
+    dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
     model_path = str(dir) + '/saved_model/' + str(model_name) +'.json'
     weights_path = str(dir) + '/saved_model/' + str(model_name)+'_weights.h5'
     json_string = model.to_json()
@@ -105,6 +109,7 @@ def save(model, dir, model_name):
 
 # WGAN loss plots
 def plot_losses(discrminator_loss, generator_loss, dir):
+    dir='/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
     plt.plot([i for i in range(discrminator_loss.shape[0])], 1 - np.array(discrminator_loss), label="D_loss")
     plt.plot(np.arange(0, discrminator_loss.shape[0], (discrminator_loss.shape[0]/generator_loss.shape[0])),
              1 - np.array(generator_loss), label="G_loss")

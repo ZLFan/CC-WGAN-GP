@@ -97,7 +97,7 @@ X= np.concatenate((Target, nonTarget), axis=0); y = np.concatenate((y_Target, y_
 X_train, y_train = data_import_ch1(X, y)
 
 # directories to store the results
-output_dir = 'outputs/'
+output_dir = '/workspace/CC-WGAN-GP/RESULT/newdata/'
 # Run tag will dynamically create the sub-directories to store results
 Run_tag = 'one_channel_gan_' + str(Number_epochs) + '_epoch/'
 #  sub-directories to store results

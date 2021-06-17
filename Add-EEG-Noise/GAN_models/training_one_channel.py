@@ -34,10 +34,10 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.5
 K.tensorflow_backend.set_session(tf.Session(config=config))
 
 batch_size = 64
-training_ratio = 2  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
+training_ratio = 5  # The training ratio is the number of discriminator updates per generator update. The paper uses 5.
 GP_Weight = 10  # As per the paper
 sample_freq = 1 # frequency at which you want to generate image or save generator models
-Number_epochs = 100
+Number_epochs = 1000
 
 
 # # uploading target data for the given subject
@@ -49,8 +49,8 @@ Number_epochs = 100
 # # creating labels
 # y_Target = np.ones(Target.shape[0]); y_nonTarget = np.zeros(nonTarget.shape[0])
 # X= np.concatenate((Target, nonTarget), axis=0); y = np.concatenate((y_Target, y_nonTarget), axis=0)
-data1=sio.loadmat('ta.mat')
-data2=sio.loadmat('tb.mat')
+data1=sio.loadmat('/workspace/CC-WGAN-GP/DATA/ta.mat')
+data2=sio.loadmat('/workspace/CC-WGAN-GP/DATA/tb.mat')
 data1=data1['ta']
 data1=np.array(data1)
 # data1.reshape(data1,(1252,231,1))
@@ -63,32 +63,6 @@ t2 = np.zeros((1252,231,1))
 t2[0:1251,0:230,0]=data2[0:1251,0:230]
 print("t1.shape: ",t1.shape)
 print("t2.shape: ",t2.shape)
-# PATH = 'F:/AI/CODE/session1_epoch/'
-# data = sio.loadmat(PATH+ 'subject_'+'1.mat')
-# train_eeg = data['data']
-# train_eeg = np.array(train_eeg)
-# print(train_eeg.shape)
-# all_data = np.zeros((train_eeg.shape[2],231,32))
-#
-# for i in range(0,32):
-#     for j in range(0,train_eeg.shape[2]):
-#         all_data[j,:,i]=train_eeg[i,:,j]
-# subject = 35
-# for i in range(2,subject+1):
-#     data = sio.loadmat(PATH+ 'subject_'+str(i)+'.mat')
-#     train_eeg = data['data']
-#     #train_eeg = np.array(train_eeg)
-#     newdata = np.zeros((train_eeg.shape[2],231,32))
-#     for i in range(0, 32):
-#         for j in range(0,train_eeg.shape[2]):
-#             newdata[j,:,i]=train_eeg[i,:,j]
-#     all_data = np.r_[all_data,newdata]
-# all_data =  all_data [:,0:231 ,12:13]
-# print(all_data.shape)
-# # all_data  = np.squeeze(all_data , axis=2)
-# # all_data = mm.fit_transform(all_data)
-# # all_data= np.expand_dims(all_data, axis=2)
-# x= all_data
 Target=t1
 nonTarget=t2
 y_Target = np.ones(Target.shape[0]); y_nonTarget = np.zeros(nonTarget.shape[0])
@@ -97,7 +71,7 @@ X= np.concatenate((Target, nonTarget), axis=0); y = np.concatenate((y_Target, y_
 X_train, y_train = data_import_ch1(X, y)
 
 # directories to store the results
-output_dir = 'F:/AI/CODE/CC-WGAN-GP-master/outputs/'
+output_dir = '/workspace/CC-WGAN-GP/RESULT/add-eeg-noise/'
 # Run tag will dynamically create the sub-directories to store results
 Run_tag = 'one_channel_gan_' + str(Number_epochs) + '_epoch/'
 #  sub-directories to store results
@@ -178,8 +152,8 @@ epochs = [];
 wgan_d_itr =[];wgan_g_itr=[]; #discriminator and generator losses for each iteration in training ratio
 wgan_d_ep=[];wgan_g_ep=[]; #discriminator and generator losses for each epoch averaging over training ratio
 
-def get_noise(self):
-    PATH = 'datanoise.mat'
+def get_noise():
+    PATH = '/workspace/CC-WGAN-GP/DATA/datanoise.mat'
     data = sio.loadmat(PATH)
     train_noise = data['eeg_noise']
     train_noise = np.array(train_noise)
@@ -193,7 +167,6 @@ def get_noise(self):
     all_noise = preprocessing.MaxAbsScaler().fit_transform(all_noise)
     all_noise = np.expand_dims(all_noise, axis=2)
     print(all_noise.shape)
-
     return all_noise
 
 for epoch in range(Number_epochs):
@@ -213,6 +186,7 @@ for epoch in range(Number_epochs):
             y_value = y_value_minibatches[j * batch_size:(j + 1) * batch_size]
             #脑电噪声
             idx = np.random.randint(0, batch_size, 120)
+            X_noise = get_noise()
             noise = X_noise[idx]
             noise = np.squeeze(noise, axis=2).astype(np.float32)
 
