@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import scipy.io as sio
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+mm = MinMaxScaler()
+
 os.environ["CUDA_VISIBLE_DEVICES"]= '0'
 
 # generate vanilla eeg during training
@@ -17,7 +21,7 @@ def get_noise(self):
             all_noise[i * j, :] = train_noise[i, j, :]
     all_noise = all_noise[:, 0:231]
     # all_noise = np.squeeze(all_noise, axis=2)
-    all_noise = preprocessing.MaxAbsScaler().fit_transform(all_noise)
+    all_noise = mm.fit_transform(all_noise)
     all_noise = np.expand_dims(all_noise, axis=2)
     print(all_noise.shape)
 

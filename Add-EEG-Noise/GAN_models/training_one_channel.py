@@ -164,7 +164,7 @@ def get_noise():
             all_noise[i * j, :] = train_noise[i, j, :]
     all_noise = all_noise[:, 0:231]
     # all_noise = np.squeeze(all_noise, axis=2)
-    all_noise = preprocessing.MaxAbsScaler().fit_transform(all_noise)
+    all_noise = mm.fit_transform(all_noise)
     all_noise = np.expand_dims(all_noise, axis=2)
     print(all_noise.shape)
     return all_noise
