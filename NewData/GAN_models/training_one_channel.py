@@ -49,8 +49,8 @@ Number_epochs = 100
 # # creating labels
 # y_Target = np.ones(Target.shape[0]); y_nonTarget = np.zeros(nonTarget.shape[0])
 # X= np.concatenate((Target, nonTarget), axis=0); y = np.concatenate((y_Target, y_nonTarget), axis=0)
-data1=sio.loadmat('ta.mat')
-data2=sio.loadmat('tb.mat')
+data1=sio.loadmat('/workspace/CC-WGAN-GP/DATA/ta.mat')
+data2=sio.loadmat('/workspace/CC-WGAN-GP/DATA/tb.mat')
 data1=data1['ta']
 data1=np.array(data1)
 # data1.reshape(data1,(1252,231,1))

@@ -36,8 +36,8 @@ GP_Weight = 10  # As per the paper
 sample_freq = 1 # frequency at which you want to generate image or save generator models
 Number_epochs = 1000
 
-data1=sio.loadmat('/CC-WGAN-GP/DATA/ta.mat')
-data2=sio.loadmat('/CC-WGAN-GP/DATA/tb.mat')
+data1=sio.loadmat('/workspace/CC-WGAN-GP/DATA/ta.mat')
+data2=sio.loadmat('/workspace/CC-WGAN-GP/DATA/tb.mat')
 data1=data1['ta']
 data1=np.array(data1)
 # data1.reshape(data1,(1252,231,1))
@@ -57,7 +57,7 @@ y_Target = np.ones(Target.shape[0]); y_nonTarget = np.zeros(nonTarget.shape[0])
 X= np.concatenate((Target, nonTarget), axis=0); y = np.concatenate((y_Target, y_nonTarget), axis=0)
 # Shuffle and reshape the data to fit in model
 X_train, y_train = data_import_ch1(X, y)
-output_dir = '/CC-WGAN-GP/RESULT/newdata/'
+output_dir = '/workspace/CC-WGAN-GP/RESULT/newdata/'
 # Run tag will dynamically create the sub-directories to store results
 Run_tag = 'one_channel_gan_' + str(Number_epochs) + '_epoch'
 #  sub-directories to store results
